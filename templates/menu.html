@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Menu</title>
+</head>
+<body>
+<h1>Menu of beautiful cafe </h1><br>
+<ul>
+    {%for food, cost in menu.items() %}
+        {% if current_day == Friday %}
+            <li>{{ food }} - {{cost / 100 * 90}}</li>
+        {% else %}
+            <li>{{ food }} - {{ cost }}</li>
+        {% endif %}
+    {% endfor %}
+</ul>
+
+</body>
+</html>
