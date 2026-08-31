@@ -8,7 +8,11 @@
 <h1>beautiful cafe</h1>
 <p>
     working hours: 11:00 - 22:00 <br>
-    status {{ work_status }}
+    {% if 11 < current_hour < 22%}
+                <p>open</p>
+           {% else %}
+                <p>closed</p>
+           {% endif %}
 </p>
 <a href= "/menu">menu</a><br>
 <img src="/static/images/cafe.png">
