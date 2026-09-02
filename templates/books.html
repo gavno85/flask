@@ -30,11 +30,27 @@
 
             {% endif %}
 
+            {% for tag in book.tags %}
+
+                <p>{{ tag }}</p>
+
+            {% endfor %}
+
             {% if book.available %}
                 <p>Є в наявності</p>
 
             {% else %}
                 <p> Немає в наявності </p>
+
+            {% endif %}
+
+            {% if book.reviews | length == 0 %}
+                <p>no reviews now</p>
+
+            {% else %}
+                {% for review in book.reviews%}
+                    <p>{{review}}</p>
+                {% endfor %}
 
             {% endif %}
         </li>
