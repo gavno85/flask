@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Books</title>
+</head>
+<body>
+<ol>
+    {% for book in book_list %}
+        <li>{{book.title | capitalize}} -</li>
+
+    {% endfor %}
+
+</ol>
+
+</body>
+</html>
