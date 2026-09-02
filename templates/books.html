@@ -7,8 +7,37 @@
 <body>
 <ol>
     {% for book in book_list %}
-        <li>{{book.title | capitalize}} -</li>
+        <li>
+            {{book.title | capitalize}} - {{book.author | capitalize}}
+            {{book.genre | upper}}
+            <br>rating: {{book.rating}}
 
+            {% if book.rating >= 9 %}
+                <p> Топова книга </p>
+
+            {% elif 7 < book.rating < 9 %}
+                <p> Хороша книга </p>
+
+            {% else %}
+                <p> На любителя </p>
+
+            {% endif %}
+
+            <br>{{book.pages}} pages
+
+            {% if book.pages > 400 %}
+                <p> Велика книга </p>
+
+            {% endif %}
+
+            {% if book.available %}
+                <p>Є в наявності</p>
+
+            {% else %}
+                <p> Немає в наявності </p>
+
+            {% endif %}
+        </li>
     {% endfor %}
 
 </ol>
