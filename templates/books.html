@@ -30,11 +30,7 @@
 
             {% endif %}
 
-            {% for tag in book.tags %}
-
-                <p>{{ tag }}</p>
-
-            {% endfor %}
+            {{book.tags.join}}
 
             {% if book.available %}
                 <p>Є в наявності</p>
