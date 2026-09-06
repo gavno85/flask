@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Temperature</title>
+</head>
+<body>
+<h1>temperature convertor</h1>
+<form method = "GET">
+    <input name = "temperature" type = "number" placeholder="temperature C" required>
+<button>convert</button>
+</form>
+    {% if temperature_f %}
+        <p>
+            temperature: {{temperature_c}}
+            <br>temperature Farenheit: {{temperature_f}}
+
+        </p>
+    {% endif %}
+</body>
+</html>
