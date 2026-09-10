@@ -14,15 +14,22 @@
     <input name="wish" type = "text" id ="add_wish">
     <button type="submit">add wish</button>
 </form>
+    {% for message in get_flashed_messages() %}
+        <p>{{ message }}</p>
+    {% endfor %}
 
 <form method="GET">
     <label for="wish_input">find wish</label>
     <input name="find" type="text" id="wish_input">
     <button type="submit">find</button>
 </form>
-    {% for message in get_flashed_messages() %}
-        <p>{{ message }}</p>
-    {% endfor %}
+
+{% if find_wish in all_wishes %}
+    <p>this wish exists</p>
+{% else %}
+    <p>this wish is not exists</p>
+{% endif %}
+
 <h3>Wishlist</h3>
 <ul>
     {% for wish in all_wishes %}

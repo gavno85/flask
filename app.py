@@ -20,13 +20,8 @@ def main():
             flash('wish must be')
         return redirect(url_for("main"))
 
-    exists_wish = request.args.get('find')
-    if exists_wish:
-        if exists_wish in all_wishes:
-            flash('this wish is in list')
-        else:
-            flash('this wish is not in list')
+    find_wish = request.args.get("find")
 
-    return render_template('main.html', all_wishes= all_wishes)
+    return render_template('main.html', all_wishes= all_wishes, find_wish = find_wish)
 
 app.run(debug=True)
