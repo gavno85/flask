@@ -12,6 +12,7 @@
         <tr>
             <td>name</td>
             <td>phone</td>
+            <td>process</td>
         </tr>
     </thead>
     <tbody>
@@ -22,6 +23,9 @@
                 </td>
                 <td>
                     {{register.user_phone}}
+                </td>
+                <td>
+                    <a href="{{ url_for('delete', index_wish= loop.index0) }}"><button>to process</button></a>
                 </td>
             </tr>
         {% endfor %}

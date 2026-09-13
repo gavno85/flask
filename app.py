@@ -26,4 +26,9 @@ def register():
 @app.route('/admin')
 def admin():
     return render_template('admin.html', all_register= all_register)
+
+@app.route('/delete/<int:index_wish>')
+def delete(index_wish):
+    all_register.pop(index_wish)
+    return redirect(url_for('admin'))
 app.run(debug=True)
