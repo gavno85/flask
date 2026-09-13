@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+</head>
+<body>
+<form method="POST">
+
+</form>
+
+<form method="POST">
+    <input name="username" type="text" placeholder="enter name" required>
+    <br><input name="phone" type="text" placeholder="enter phone" required>
+    <button type="submit">sumbit</button>
+</form>
+{% if phone and username %}
+    {% for message in get_flashed_messages() %}
+        <strong>{{ message }}</strong>
+    {% endfor %}
+{% endif %}
+
+</body>
+</html>
