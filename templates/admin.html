@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>admin</title>
+</head>
+<body>
+<table border="2" cellpadding="2">
+    <caption>all registers</caption>
+
+    <thead>
+        <tr>
+            <td>name</td>
+            <td>phone</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for register in all_register %}
+            <tr>
+                <td>
+                    {{register.username}}
+                </td>
+                <td>
+                    {{register.user_phone}}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+</body>
+</html>

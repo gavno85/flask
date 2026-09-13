@@ -13,6 +13,11 @@
 </p>
 <img src="/static/images/python.png">
 
-<a href="/register">register</a>
+<br><a href="/register">register</a>
+<br><a href="/admin">admin</a>
+
+{% for message in get_flashed_messages() %}
+    <strong>{{ message }}</strong>
+{% endfor %}
 </body>
 </html>

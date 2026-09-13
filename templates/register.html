@@ -14,11 +14,8 @@
     <br><input name="phone" type="text" placeholder="enter phone" required>
     <button type="submit">sumbit</button>
 </form>
-{% if phone and username %}
-    {% for message in get_flashed_messages() %}
-        <strong>{{ message }}</strong>
-    {% endfor %}
-{% endif %}
-
+{% for message in get_flashed_messages() %}
+    <strong>{{ message }}</strong>
+{% endfor %}
 </body>
 </html>
