@@ -4,6 +4,10 @@ app = Flask(__name__)
 app.secret_key = "asdad"
 all_register= []
 
+def phone_audit(user_phone: str):
+    return len(user_phone) != 13 or user_phone[:4] != "+380"
+
+
 @app.route('/')
 def main():
     return render_template("main.html")
@@ -13,7 +17,7 @@ def register():
     if request.method == "POST":
         username = request.form.get("username")
         user_phone = request.form.get('phone')
-        if len(user_phone) != 13 or user_phone[:4] != "+380":
+        if phone_audit(user_phone):
             flash("input incorrect number")
         else:
             all_register.append({'username': username, 'user_phone': user_phone})
