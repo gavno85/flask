@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Products</title>
+</head>
+<body>
+{% for message in get_flashed_messages() %}
+    <p>{{ message }}</p>
+{% endfor %}
+
+<h1>manager of products</h1>
+
+<h3>add products</h3>
+
+<form method="POST">
+    <input name="name_product" type="text" placeholder="name of product" required>
+    <input name="price_product" type="number" placeholder="price of product" required>
+    <input name="category_product" type="text" placeholder="category of product" required>
+    <button type="submit">add</button>
+</form>
+
+<h3>list of all products</h3>
+<table border="1" cellpadding="10">
+    <thead>
+        <tr>
+            <th>name</th>
+            <th>price</th>
+            <th>category</th>
+            <th>action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for name, info in all_products.items() %}
+            <tr>
+                <td>{{ name }}</td>
+                <td>{{ info.price }}</td>
+                <td>{{ info.category }}</td>
+                <td>
+                    <a><button>delete</button></a>
+                </td>
+            </tr>
+        {% endfor %}
+
+    </tbody>
+
+</table>
+
+</body>
+</html>
