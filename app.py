@@ -24,4 +24,8 @@ def products():
         return redirect(url_for('products'))
 
     return render_template('products.html', all_products=all_products)
+
+@app.route('/delete/<int: key_product>')
+def delete(key_product):
+    all_products.pop(key_product)
 app.run(debug=True)

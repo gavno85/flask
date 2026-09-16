@@ -37,7 +37,7 @@
                 <td>{{ info.price }}</td>
                 <td>{{ info.category }}</td>
                 <td>
-                    <a><button>delete</button></a>
+                     <a href="{{ url_for('delete', key_product= name) }}"><button>delete</button></a>
                 </td>
             </tr>
         {% endfor %}
