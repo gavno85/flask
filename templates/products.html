@@ -20,6 +20,36 @@
     <button type="submit">add</button>
 </form>
 
+<h3>Select category</h3>
+<form method="GET">
+    <select name="category">
+        <option value="All">All</option>
+        {% for category in all_categories %}
+            <option value="{{ category }}"
+                    {% if choose_category == category %}
+                    selected
+                    {% endif %}>
+                {{ category }}
+            </option>
+
+        {% endfor %}
+
+    </select>
+    <select name="sorted">
+        <option value="name_asc">name_asc</option>
+        <option value="name_desc">name_desc</option>
+        <option value="price_asc">price_asc</option>
+        <option value="price_desc">price_desc</option>
+    </select>
+    <button type="submit">use</button>
+</form>
+
+<h3>find product by name</h3>
+<form method="GET">
+    <input name="search_by_name" type="text" placeholder="enter name or past of">
+    <button type="submit">submit</button>
+</form>
+
 <h3>list of all products</h3>
 <table border="1" cellpadding="10">
     <thead>
@@ -38,7 +68,7 @@
                 <td>{{ info.price }}</td>
                 <td>{{ info.category }}</td>
                 <td>
-                     <a href="{{ url_for('delete_product', key_product= name) }}"><button>delete</button></a>
+                     <a href="{{ url_for('delete_product', name_product= name) }}"><button>delete</button></a>
                 </td>
                 <td>
                     <a href="{{url_for('edit_product', name_product= name)}}"><button>edit</button></a>
