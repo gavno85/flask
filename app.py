@@ -43,12 +43,17 @@ def products():
         sorted_products = dict(sorted(filtered_products.items(),
                                       key=lambda product: int(product[1].get('price')), reverse=True))
 
-    search = request.args.get('search_by_name')
-    for name, info in sorted_products.items():
-        if
+    search = request.args.get('search_by_name', '').strip()
+    if search and search != 'All':
+        searched_products = {
+            name: product_info for name, product_info in sorted_products.items()
+            if search.lower() in name.lower()
+        }
+    else:
+        searched_products = sorted_products
 
     return render_template('products.html',
-                           all_products= sorted_products,
+                           all_products= searched_products,
                            all_categories= all_categories,
                            choose_category= choose_category,
                            choosed_sort_method= choosed_sort_method)
