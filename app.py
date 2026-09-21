@@ -1,8 +1,47 @@
 from flask import Flask, render_template, request, flash, redirect, url_for
+from models import *
 
 app = Flask(__name__)
 app.secret_key = 'password'
+init_db()
 all_products = {}
+
+def sort_products(choosed_sort_method : str, products: dict):
+    if choosed_sort_method == 'name_asc':
+        sorted_products = dict(sorted(products.items(),
+                                      key=lambda product: product[0]))
+
+    elif choosed_sort_method == 'name_desc':
+        sorted_products = dict(sorted(products.items(),
+                                      key=lambda product: product[0], reverse=True))
+
+    elif choosed_sort_method == 'price_asc':
+        sorted_products = dict(sorted(products.items(),
+                                      key=lambda product: int(product[1].get('price'))))
+
+    else:
+        sorted_products = dict(sorted(products.items(),
+                                      key=lambda product: int(product[1].get('price')), reverse=True))
+    return sorted_products
+
+def search_by_name(products, name):
+    if name and name != 'All':
+        searched_products = {
+            name_search: product_info for name_search, product_info in products.items()
+            if name.lower() in name_search.lower()
+        }
+    else:
+        searched_products = products
+    return searched_products
+
+def filter_product(category, products):
+    if category == "All":
+        filtered_products = products
+    else:
+        filtered_products = {name:product_info for name, product_info in products.items()
+                             if product_info.get('category') == category}
+    return filtered_products
+
 
 @app.route('/', methods=['GET', "POST"])
 @app.route('/products', methods=["GET","POST"])
@@ -19,38 +58,15 @@ def products():
 
         return redirect(url_for('products'))
     all_categories = [product_info.get('category') for product_info in all_products.values()]
+
     choose_category = request.args.get('category', 'All')
-    if choose_category == "All":
-        filtered_products = all_products
-    else:
-        filtered_products = {name:product_info for name, product_info in all_products.items()
-                             if product_info.get('category') == choose_category}
+    filtered_products = filter_product(choose_category, all_products)
 
-    choosed_sort_method = request.args.get('sorted')
-    if choosed_sort_method == 'name_asc':
-        sorted_products = dict(sorted(filtered_products.items(),
-                                      key=lambda product: product[0]))
-
-    elif choosed_sort_method == 'name_desc':
-        sorted_products = dict(sorted(filtered_products.items(),
-                                      key=lambda product: product[0], reverse=True))
-
-    elif choosed_sort_method == 'price_asc':
-        sorted_products= dict(sorted(filtered_products.items(),
-                                     key=lambda product: int(product[1].get('price'))))
-
-    else:
-        sorted_products = dict(sorted(filtered_products.items(),
-                                      key=lambda product: int(product[1].get('price')), reverse=True))
+    choosed_sort_method = request.args.get('sorted', 'name_asc')
+    sorted_products = sort_products(choosed_sort_method, filtered_products)
 
     search = request.args.get('search_by_name', '').strip()
-    if search and search != 'All':
-        searched_products = {
-            name: product_info for name, product_info in sorted_products.items()
-            if search.lower() in name.lower()
-        }
-    else:
-        searched_products = sorted_products
+    searched_products = search_by_name(sorted_products, search)
 
     return render_template('products.html',
                            all_products= searched_products,
