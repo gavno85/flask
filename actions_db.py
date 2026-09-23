@@ -1,12 +1,8 @@
-from app import all_products
 from models import Product
 # create
 def add_product(name, price, category):
     Product.create(name= name, price= price, category= category)
 # read
-def get_product(name: str):
-    return {product for product in all_products if name == product.name}
-
 def product_exists(name: str) -> bool:
     return Product.select(Product.name).where(Product.name == name).exists()
 
@@ -31,4 +27,4 @@ def delete_product(name):
 # update
 def edit_product(name, category, price):
     if product_exists(name):
-        all_products[name] = {'category': category, 'price': price}
+        Product.update(Product.category == category, Product.price == price).where(Product.name == name)
