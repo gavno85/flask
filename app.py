@@ -25,14 +25,10 @@ def products():
     all_companies = get_all_companies()
 
     choose_category = request.args.get('category', 'All')
-    print(f'user choosed {choose_category}')
     choosed_sort_method = request.args.get('sorted', 'name_asc')
     search = request.args.get('search_by_name', '').strip()
-
-    if choose_category == "All":
-        filtered_products = get_all_products()
-    else:
-        filtered_products = get_specific_products(choosed_sort_method, choose_category, search)
+    
+    filtered_products = get_specific_products(choosed_sort_method, choose_category, search)
 
     return render_template('products.html',
                            all_products= filtered_products,

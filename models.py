@@ -2,14 +2,16 @@ from peewee import *
 
 db = SqliteDatabase('db.sqlite')
 
+
 class Company(Model):
     id = AutoField(primary_key= True)
-    company = CharField(unique= True)
+    company_name = CharField(unique= True)
     password_hash = CharField()
 
     class Meta:
         database = db
         table_name = 'company'
+
 
 class Product(Model):
     id = AutoField(primary_key= True)
@@ -21,6 +23,7 @@ class Product(Model):
     class Meta:
         database = db
         table_name = 'product'
+
 
 def init_db():
     db.connect()

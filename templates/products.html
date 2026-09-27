@@ -33,7 +33,7 @@
             {% for company in all_companies %}
                 <tr>
                     <td>{{company.id}}</td>
-                    <td>{{company.name}}</td>
+                    <td>{{company.company_name}}</td>
                 </tr>
             {% endfor %}
     </tbody>
@@ -76,6 +76,7 @@
             <th>name</th>
             <th>price</th>
             <th>category</th>
+            <th>company id</th>
             <th>delete</th>
             <th>edit</th>
         </tr>
@@ -86,6 +87,7 @@
                 <td>{{ product.name }}</td>
                 <td>{{ product.price }}</td>
                 <td>{{ product.category }}</td>
+                <td>{{ product.company_id }}</td>
                 <td>
                      <a href="{{ url_for('delete_product', name_product= product.name) }}"><button>delete</button></a>
                 </td>
