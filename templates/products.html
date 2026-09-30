@@ -8,7 +8,12 @@
 {% for message in get_flashed_messages() %}
     <p>{{ message }}</p>
 {% endfor %}
-
+{% if current_company == None %}
+    <a href="/register"><button>register</button></a>
+    <a href="/login"><button>login</button></a>
+{% else %}
+    <a href="/LogOut"><button>logout</button></a>
+{% endif %}
 <h1>manager of products</h1>
 
 <h3>add products</h3>
@@ -17,9 +22,7 @@
     <input name="name_product" type="text" placeholder="name of product" required>
     <input name="price_product" type="number" placeholder="price of product" required>
     <br><input name="category_product" type="text" placeholder="category of product" required>
-    <input name="company_id" type="number" placeholder="company id" required>
     <button type="submit">add</button>
-    <br><a href="/companies"><button type="button">register company</button></a>
 </form>
 <h3> All companies</h3>
 <table border="1" cellpadding="10">
@@ -33,7 +36,7 @@
             {% for company in all_companies %}
                 <tr>
                     <td>{{company.id}}</td>
-                    <td>{{company.company_name}}</td>
+                    <td>{{company.name}}</td>
                 </tr>
             {% endfor %}
     </tbody>

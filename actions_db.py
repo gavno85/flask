@@ -4,13 +4,16 @@ def add_product(name, price, category, company_id):
     Product.create(name= name, price= price, category= category, company_id= company_id)
 
 def add_company(company_name, password_hash):
-    Company.create(company_name= company_name, password_hash= password_hash)
+    Company.create(name= company_name, password= password_hash)
 # read
 def product_exists(name: str) -> bool:
     return Product.select(Product.name).where(Product.name == name).exists()
 
 def company_exists(name: str) -> bool:
-    return Company.select(Company.company_name).where(Company.company_name == name).exists()
+    return Company.select(Company.name).where(Company.name == name).exists()
+
+def get_company(name):
+    return Company.get_or_none(Company.name == name)
 
 def get_all_companies():
     return list(Company.select())
@@ -46,11 +49,14 @@ def get_all_products() -> list:
     return list(Product.select())
 
 def get_product(name):
-    return Product.get(Product.name == name)
+    return Product.get_or_none(Product.name == name)
 
 # delete
 def delete_product_db(name):
     Product.delete().where(Product.name == name).execute()
+
+def delete_company(name):
+    Company.delete().where(Company.name == name).execute()
 
 # update
 def edit_product_db(name, category, price):
