@@ -9,10 +9,10 @@
     <p>{{ message }}</p>
 {% endfor %}
 {% if current_company == None %}
-    <a href="/register"><button>register</button></a>
-    <a href="/login"><button>login</button></a>
+    <a href="{{ url_for('register_company') }}"><button>register</button></a>
+    <a href="{{ url_for('login') }}"><button>login</button></a>
 {% else %}
-    <a href="/LogOut"><button>logout</button></a>
+    <a href="{{ url_for('logout') }}"><button>logout</button></a>
 {% endif %}
 <h1>manager of products</h1>
 

@@ -46,7 +46,7 @@ def register_company():
         company_name = request.form.get('company_name')
         company_password = request.form.get('password')
 
-        if len(company_password) >= 6 or not company_exists(company_name) or company_name:
+        if is_valid_account(company_name, company_password):
             password_hash = generate_password_hash(company_password)
             add_company(company_name, password_hash)
             global current_company
@@ -114,3 +114,6 @@ def edit_product(name_product):
             flash('product was not finded')
     return render_template('edit.html', old_product_info= [old_category, old_price])
 app.run(debug=True)
+
+def is_valid_account(name, password):
+    return len(password) >= 6 or not company_exists(name) or name
