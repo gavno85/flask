@@ -19,7 +19,7 @@ def is_logged():
 
 
 def is_valid_account(name, password):
-    return len(password) >= 6 and not company_exists(name) or name
+    return len(password) >= 6 and not company_exists(name)
 
 
 @app.route('/', methods=['GET', "POST"])
@@ -154,20 +154,20 @@ def edit_product(name_product):
 
 @app.route('/profile', methods= ["GET", "POST"])
 def profile():
-    company = get_company(get_current_company())
-    if not company:
-        session.pop('current_company', None)
+    if not is_logged():
         return redirect(url_for('login'))
+
+    company = get_company(get_current_company())
 
     products_company = get_company_products(company.id)
     return render_template('profile.html', current_company=company, products_company= products_company)
 
 @app.route('/new_name', methods= ["GET", "POST"])
 def new_name():
-    company = get_company(get_current_company())
-    if not company:
-        session.pop('current_company')
+    if not is_logged():
         return redirect(url_for('login'))
+
+    company = get_company(get_current_company())
 
     if request.method == "POST":
         new_name_company = request.form.get('new_name')
@@ -180,10 +180,10 @@ def new_name():
 
 @app.route('/new_password', methods= ["GET", "POST"])
 def new_password():
-    company = get_company(get_current_company())
-    if not company:
-        session.pop('current_company', None)
+    if not is_logged():
         return redirect(url_for('login'))
+
+    company = get_company(get_current_company())
 
     if request.method == "POST":
         old_password = request.form.get('old_password')
@@ -209,17 +209,18 @@ def new_password():
 
 @app.route('/confirmation_delete_account')
 def confirmation_delete_account():
+    if not is_logged():
+        return redirect(url_for('login'))
     return render_template('confirmation_delete_account.html')
 
 @app.route('/delete_account')
 def delete_account():
-    company = get_company(get_current_company())
-    if not company:
-        session.pop('current_company', None)
+    if not is_logged():
         return redirect(url_for('login'))
+
+    company = get_company(get_current_company())
     delete_product_by_company(company.id)
     delete_company(company.name)
-    return redirect(url_for('products'))
-    return render_template('delete_account.html')
+    return redirect(url_for('login'))
 
 app.run(debug=True)
