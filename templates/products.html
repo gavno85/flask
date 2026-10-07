@@ -12,6 +12,7 @@
     <a href="{{ url_for('register_company') }}"><button>register</button></a>
     <a href="{{ url_for('login') }}"><button>login</button></a>
 {% else %}
+    <a href="{{ url_for('profile') }}"><button>profile</button></a>
     <a href="{{ url_for('logout') }}"><button>logout</button></a>
 {% endif %}
 <h1>manager of products</h1>
@@ -24,23 +25,6 @@
     <br><input name="category_product" type="text" placeholder="category of product" required>
     <button type="submit">add</button>
 </form>
-<h3> All companies</h3>
-<table border="1" cellpadding="10">
-    <thead>
-        <tr>
-            <th>id</th>
-            <th>name</th>
-        </tr>
-    </thead>
-    <tbody>
-            {% for company in all_companies %}
-                <tr>
-                    <td>{{company.id}}</td>
-                    <td>{{company.name}}</td>
-                </tr>
-            {% endfor %}
-    </tbody>
-</table>
 
 <h3>Select category</h3>
 <form method="GET">
@@ -79,7 +63,6 @@
             <th>name</th>
             <th>price</th>
             <th>category</th>
-            <th>company id</th>
             <th>delete</th>
             <th>edit</th>
         </tr>
@@ -90,7 +73,6 @@
                 <td>{{ product.name }}</td>
                 <td>{{ product.price }}</td>
                 <td>{{ product.category }}</td>
-                <td>{{ product.company_id }}</td>
                 <td>
                      <a href="{{ url_for('delete_product', name_product= product.name) }}"><button>delete</button></a>
                 </td>

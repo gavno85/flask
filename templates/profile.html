@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+</head>
+<body>
+<h2>{{ current_company.name }}</h2>
+<h3>you have {{ products_company|length }} products</h3>
+
+<a href="{{ url_for('new_name') }}"><button>update name</button></a>
+<a href="{{ url_for('new_password') }}"><button>update password</button></a>
+<a href="{{ url_for('logout') }}"><button>LogOut</button></a>
+</body>
+</html>
