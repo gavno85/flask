@@ -15,7 +15,7 @@ class Company(Model):
 
 class Product(Model):
     id = AutoField(primary_key= True)
-    name = CharField(unique= True)
+    name = CharField()
     price = IntegerField()
     category = CharField()
     company = ForeignKeyField(Company, backref="products")

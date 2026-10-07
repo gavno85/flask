@@ -3,6 +3,8 @@ from flask import Flask, render_template, request, flash, redirect, url_for, ses
 from models import *
 from werkzeug.security import generate_password_hash, check_password_hash
 
+from models import Company
+
 app = Flask(__name__)
 app.secret_key = 'password'
 init_db()
@@ -17,7 +19,7 @@ def is_logged():
 
 
 def is_valid_account(name, password):
-    return len(password) >= 6 or not company_exists(name) or name
+    return len(password) >= 6 and not company_exists(name) or name
 
 
 @app.route('/', methods=['GET', "POST"])
@@ -153,6 +155,10 @@ def edit_product(name_product):
 @app.route('/profile', methods= ["GET", "POST"])
 def profile():
     company = get_company(get_current_company())
+    if not company:
+        session.pop('current_company', None)
+        return redirect(url_for('login'))
+
     products_company = get_company_products(company.id)
     return render_template('profile.html', current_company=company, products_company= products_company)
 
@@ -165,7 +171,7 @@ def new_name():
 
     if request.method == "POST":
         new_name_company = request.form.get('new_name')
-        if new_name_company and new_name_company not in get_all_company_names():
+        if new_name_company and not company_exists(new_name_company):
             update_company_name(company.name, new_name_company)
             session['current_company'] = new_name_company
             flash('name was updated')
@@ -175,17 +181,45 @@ def new_name():
 @app.route('/new_password', methods= ["GET", "POST"])
 def new_password():
     company = get_company(get_current_company())
+    if not company:
+        session.pop('current_company', None)
+        return redirect(url_for('login'))
+
     if request.method == "POST":
         old_password = request.form.get('old_password')
+
         if not check_password_hash(company.password, old_password):
             flash('uncorrect old password')
+
             return redirect(url_for('new_password'))
+
         new_password = request.form.get('new_password')
         again_new_password = request.form.get('again_new_password')
-        if new_password != again_new_password:
-            flash('The new password does not match the repeated password')
+        new_password_hash = generate_password_hash(new_password)
+
+        if not new_password == again_new_password and len(new_password) >= 6:
+            flash('The new password does not match the repeated password or length of password < 6')
             return redirect(url_for('new_password'))
-        update_company_password(company.name, new_password)
+
+        update_company_password(company.name, new_password_hash)
+        flash('password was updated')
+        return redirect(url_for('profile'))
+
     return render_template('new_password.html')
+
+@app.route('/confirmation_delete_account')
+def confirmation_delete_account():
+    return render_template('confirmation_delete_account.html')
+
+@app.route('/delete_account')
+def delete_account():
+    company = get_company(get_current_company())
+    if not company:
+        session.pop('current_company', None)
+        return redirect(url_for('login'))
+    delete_product_by_company(company.id)
+    delete_company(company.name)
+    return redirect(url_for('products'))
+    return render_template('delete_account.html')
 
 app.run(debug=True)

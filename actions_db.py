@@ -64,6 +64,9 @@ def delete_product_db(name, company_id):
 def delete_company(name):
     Company.delete().where(Company.name == name).execute()
 
+def delete_product_by_company(company_id):
+    Product.delete().where(Product.company == company_id).execute()
+
 # update
 def edit_product_db(name, category, price, company_id):
     if product_exists(name, company_id):
