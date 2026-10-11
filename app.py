@@ -2,34 +2,27 @@ from actions_db import *
 from flask import Flask, render_template, request, flash, redirect, url_for, session
 from models import *
 from werkzeug.security import generate_password_hash, check_password_hash
-
-from models import Company
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 
 app = Flask(__name__)
 app.secret_key = 'password'
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
 init_db()
-
-
-def get_current_company():
-    return session['current_company']
-
-
-def is_logged():
-    return 'current_company' in session
-
 
 def is_valid_account(name, password):
     return len(password) >= 6 and not company_exists(name)
 
+@login_manager.user_loader
+def load_user(company_id):
+    return get_company_by_id(int(company_id))
 
 @app.route('/', methods=['GET', "POST"])
 @app.route('/products', methods=["GET","POST"])
+@login_required
 def products():
-    if not is_logged():
-        return redirect(url_for('login'))
-
-    current_company = get_company(get_current_company())
-    if not current_company:
+    if not current_user:
         session.pop('current_company', None)
         return redirect(url_for('login'))
 
@@ -38,21 +31,21 @@ def products():
         price_product = request.form.get('price_product')
         category_product = request.form.get('category_product')
 
-        if not product_exists(name_product, current_company.id):
-            add_product(name_product, price_product, category_product, current_company.id)
+        if not product_exists(name_product, current_user.id):
+            add_product(name_product, price_product, category_product, current_user.id)
         else:
             flash(f'product {name_product} is exists')
 
         return redirect(url_for('products'))
 
-    all_categories = get_all_categories(current_company.id)
+    all_categories = get_all_categories(current_user.id)
     all_companies = get_all_companies()
 
     choose_category = request.args.get('category', 'All')
     choosed_sort_method = request.args.get('sorted', 'name_asc')
     search = request.args.get('search_by_name', '').strip()
 
-    filtered_products = get_specific_products(current_company.id, choosed_sort_method, choose_category, search)
+    filtered_products = get_specific_products(current_user.id, choosed_sort_method, choose_category, search)
 
     return render_template('products.html',
                            all_products= filtered_products,
@@ -60,7 +53,7 @@ def products():
                            choose_category= choose_category,
                            choosed_sort_method= choosed_sort_method,
                            all_companies = all_companies,
-                           current_company= get_current_company())
+                           current_company= current_user)
 
 
 @app.route('/register', methods= ["GET", "POST"])
@@ -88,26 +81,22 @@ def login():
         if not company_exists(company_name):
             flash(f'company {company_name} is not exists')
             return redirect(url_for('register_company'))
-
         company = get_company(company_name)
+
         if not check_password_hash(company.password, company_password):
             flash('incorrect password')
             return redirect(url_for('login'))
 
-        session['current_company'] = company_name
+        login_user(company)
         flash(f'welcome {company_name}')
         return redirect(url_for('products'))
 
-
     return render_template('login.html')
 
-
 @app.route('/LogOut')
+@login_required
 def logout():
-    if not is_logged():
-        return redirect(url_for('login'))
-
-    session.pop('current_company')
+    logout_user()
     flash('you LogOut')
 
     return redirect(url_for('products'))
@@ -115,37 +104,27 @@ def logout():
 
 @app.route('/delete_product/<name_product>', methods= ["GET", "POST"])
 def delete_product(name_product):
-    if not is_logged():
-        return redirect(url_for('login'))
-
-    current_company = get_company(get_current_company())
-
-    if product_exists(name_product, current_company.id):
+    if product_exists(name_product, current_user.id):
         flash(f'product {name_product} deleted')
-        delete_product_db(name_product, current_company.id)
+        delete_product_db(name_product, current_user.id)
 
     return redirect(url_for('products'))
 
 
 @app.route('/edit/<name_product>', methods= ["GET", "POST"])
 def edit_product(name_product):
-    if not is_logged():
-        return redirect(url_for('login'))
-
-    current_company = get_company(get_current_company())
-
-    if product_exists(name_product, current_company.id):
-        old_category = get_product(name_product, current_company.id).category
-        old_price = get_product(name_product, current_company.id).price
+    if product_exists(name_product, current_user.id):
+        old_category = get_product(name_product, current_user.id).category
+        old_price = get_product(name_product, current_user.id).price
     else:
         flash('error in edit')
         return redirect(url_for('products'))
 
     if request.method == "POST":
-        if product_exists(name_product, current_company.id):
+        if product_exists(name_product, current_user.id):
             new_category = request.form.get('new_category')
             new_price = request.form.get('new_price')
-            edit_product_db(name_product, new_category, new_price, current_company.id)
+            edit_product_db(name_product, new_category, new_price, current_user.id)
             flash('product was edited')
             return redirect(url_for('products'))
         else:
@@ -153,26 +132,17 @@ def edit_product(name_product):
     return render_template('edit.html', old_product_info= [old_category, old_price])
 
 @app.route('/profile', methods= ["GET", "POST"])
+@login_required
 def profile():
-    if not is_logged():
-        return redirect(url_for('login'))
-
-    company = get_company(get_current_company())
-
-    products_company = get_company_products(company.id)
-    return render_template('profile.html', current_company=company, products_company= products_company)
+    products_company = get_company_products(current_user.id)
+    return render_template('profile.html', current_company=current_user, products_company= products_company)
 
 @app.route('/new_name', methods= ["GET", "POST"])
 def new_name():
-    if not is_logged():
-        return redirect(url_for('login'))
-
-    company = get_company(get_current_company())
-
     if request.method == "POST":
         new_name_company = request.form.get('new_name')
         if new_name_company and not company_exists(new_name_company):
-            update_company_name(company.name, new_name_company)
+            update_company_name(current_user.name, new_name_company)
             session['current_company'] = new_name_company
             flash('name was updated')
             return redirect(url_for('profile'))
@@ -180,28 +150,23 @@ def new_name():
 
 @app.route('/new_password', methods= ["GET", "POST"])
 def new_password():
-    if not is_logged():
-        return redirect(url_for('login'))
-
-    company = get_company(get_current_company())
-
     if request.method == "POST":
         old_password = request.form.get('old_password')
 
-        if not check_password_hash(company.password, old_password):
+        if not check_password_hash(current_user.password, old_password):
             flash('uncorrect old password')
 
             return redirect(url_for('new_password'))
 
-        new_password = request.form.get('new_password')
+        new_password_html = request.form.get('new_password')
         again_new_password = request.form.get('again_new_password')
-        new_password_hash = generate_password_hash(new_password)
+        new_password_hash = generate_password_hash(new_password_html)
 
-        if not new_password == again_new_password and len(new_password) >= 6:
+        if not new_password_html == again_new_password and len(new_password_html) >= 6:
             flash('The new password does not match the repeated password or length of password < 6')
             return redirect(url_for('new_password'))
 
-        update_company_password(company.name, new_password_hash)
+        update_company_password(current_user.name, new_password_hash)
         flash('password was updated')
         return redirect(url_for('profile'))
 
@@ -209,18 +174,12 @@ def new_password():
 
 @app.route('/confirmation_delete_account')
 def confirmation_delete_account():
-    if not is_logged():
-        return redirect(url_for('login'))
     return render_template('confirmation_delete_account.html')
 
 @app.route('/delete_account')
 def delete_account():
-    if not is_logged():
-        return redirect(url_for('login'))
-
-    company = get_company(get_current_company())
-    delete_product_by_company(company.id)
-    delete_company(company.name)
+    delete_product_by_company(current_user.id)
+    delete_company(current_user.name)
     return redirect(url_for('login'))
 
 app.run(debug=True)

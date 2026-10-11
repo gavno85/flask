@@ -1,9 +1,10 @@
+from flask_login import UserMixin
 from peewee import *
 
 db = SqliteDatabase('db.sqlite')
 
 
-class Company(Model):
+class Company(UserMixin, Model):
     id = AutoField(primary_key= True)
     name = CharField(unique= True)
     password = CharField()
@@ -23,6 +24,7 @@ class Product(Model):
     class Meta:
         database = db
         table_name = 'product'
+
 
 
 def init_db():
