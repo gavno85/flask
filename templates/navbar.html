@@ -1,0 +1,12 @@
+<nav>
+    <a href="{{ url_for('products') }}">product manager</a>
+    <div>
+        {% if current_company == None %}
+            <a href="{{ url_for('register_company') }}"><button>register</button></a>
+            <a href="{{ url_for('login') }}"><button>login</button></a>
+        {% else %}
+            <a href="{{ url_for('profile') }}"><button>profile</button></a>
+            <a href="{{ url_for('logout') }}"><button>logout</button></a>
+        {% endif %}
+    </div>
+</nav>

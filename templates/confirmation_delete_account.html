@@ -1,13 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>confirmation_delete_account</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block title %}
+delete account confirmation
+{% endblock %}
+
+{% block content %}
 <h1>are you sure that you want to delete account?</h1>
 <a href="{{ url_for('delete_account') }}"><button>sumbit</button></a>
 <a href="{{ url_for('profile') }}"><button>reject</button></a>
 
-</body>
-</html>
+{% endblock %}

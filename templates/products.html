@@ -1,20 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Products</title>
-</head>
-<body>
-{% for message in get_flashed_messages() %}
-    <p>{{ message }}</p>
-{% endfor %}
-{% if current_company == None %}
-    <a href="{{ url_for('register_company') }}"><button>register</button></a>
-    <a href="{{ url_for('login') }}"><button>login</button></a>
-{% else %}
-    <a href="{{ url_for('profile') }}"><button>profile</button></a>
-    <a href="{{ url_for('logout') }}"><button>logout</button></a>
-{% endif %}
+{% extends 'base.html' %}
+
+{% block title %}
+Products
+{% endblock %}
+
+{% block content %}
 <h1>manager of products</h1>
 
 <h3>add products</h3>
@@ -86,5 +76,4 @@
 
 </table>
 
-</body>
-</html>
+{% endblock %}

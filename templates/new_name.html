@@ -1,14 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>new_name</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block title %}
+new name
+{% endblock %}
+
+{% block content %}
+{% for message in get_flashed_messages() %}
+    <p>{{ message }}</p>
+{% endfor %}
+<h2>new name</h2>
 <form method="POST">
     <input name="new_name" type="text" placeholder="input new name">
     <button type="submit">sumbit</button>
 </form>
-
-</body>
-</html>
+{% endblock %}

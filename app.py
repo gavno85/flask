@@ -103,6 +103,7 @@ def logout():
 
 
 @app.route('/delete_product/<name_product>', methods= ["GET", "POST"])
+@login_required
 def delete_product(name_product):
     if product_exists(name_product, current_user.id):
         flash(f'product {name_product} deleted')
@@ -112,6 +113,7 @@ def delete_product(name_product):
 
 
 @app.route('/edit/<name_product>', methods= ["GET", "POST"])
+@login_required
 def edit_product(name_product):
     if product_exists(name_product, current_user.id):
         old_category = get_product(name_product, current_user.id).category
@@ -138,6 +140,7 @@ def profile():
     return render_template('profile.html', current_company=current_user, products_company= products_company)
 
 @app.route('/new_name', methods= ["GET", "POST"])
+@login_required
 def new_name():
     if request.method == "POST":
         new_name_company = request.form.get('new_name')
@@ -146,9 +149,13 @@ def new_name():
             session['current_company'] = new_name_company
             flash('name was updated')
             return redirect(url_for('profile'))
+        else:
+            flash('this name is used')
+            return redirect(url_for('new_name'))
     return render_template('new_name.html')
 
 @app.route('/new_password', methods= ["GET", "POST"])
+@login_required
 def new_password():
     if request.method == "POST":
         old_password = request.form.get('old_password')
@@ -162,7 +169,7 @@ def new_password():
         again_new_password = request.form.get('again_new_password')
         new_password_hash = generate_password_hash(new_password_html)
 
-        if not new_password_html == again_new_password and len(new_password_html) >= 6:
+        if not new_password_html == again_new_password or len(new_password_html) >= 6:
             flash('The new password does not match the repeated password or length of password < 6')
             return redirect(url_for('new_password'))
 
@@ -173,13 +180,16 @@ def new_password():
     return render_template('new_password.html')
 
 @app.route('/confirmation_delete_account')
+@login_required
 def confirmation_delete_account():
     return render_template('confirmation_delete_account.html')
 
 @app.route('/delete_account')
+@login_required
 def delete_account():
     delete_product_by_company(current_user.id)
     delete_company(current_user.name)
+    logout_user()
     return redirect(url_for('login'))
 
 app.run(debug=True)

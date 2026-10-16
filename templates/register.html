@@ -1,18 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Company</title>
-</head>
-<body>
-<h1>Register company</h1>
-{% for message in get_flashed_messages() %}
-    <p>{{ message }}</p>
-{% endfor %}
+{% extends 'base.html' %}
+
+{% block title %}
+register
+{% endblock %}
+
+{% block content %}
 <form method="POST">
     <input name="company_name" type="text" placeholder="input name of company">
     <br><input name="password" type="password" placeholder="input password">
     <button type="submit">register</button>
 </form>
-</body>
-</html>
+{% endblock %}

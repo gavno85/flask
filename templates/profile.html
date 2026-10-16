@@ -1,15 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Profile</title>
-</head>
-<body>
-<h2>{{ current_company.name }}</h2>
+{% extends 'base.html' %}
+
+{% block title %}
+profile
+{% endblock %}
+
+{% block content %}
 <h3>you have {{ products_company|length }} products</h3>
 
 <a href="{{ url_for('new_name') }}"><button>update name</button></a>
 <a href="{{ url_for('new_password') }}"><button>update password</button></a>
 <a href="{{ url_for('confirmation_delete_account') }}"><button>delete account</button></a>
-</body>
-</html>
+{% endblock %}
