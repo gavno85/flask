@@ -5,7 +5,9 @@
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
-{% include 'navbar.html' %}
+{% block navbar %}
+    {% include 'navbar.html' %}
+{% endblock %}
 
 {% for message in get_flashed_messages() %}
     <p>{{ message }}</p>
