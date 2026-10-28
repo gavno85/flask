@@ -2,17 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-B/GM4XqrwHnWXNOWMbloTmrYXZg10cakYGmpfsR/bbzQ6JAJI4ihuyADKLnBgrCe" crossorigin="anonymous">
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
+
 {% block navbar %}
     {% include 'navbar.html' %}
 {% endblock %}
 
-{% for message in get_flashed_messages() %}
-    <p>{{ message }}</p>
+<div class="container">
+{% for category, message in get_flashed_messages(with_categories=true) %}
+    <p class="flash {{ category }}">{{ message }}</p>
 {% endfor %}
 
 {% block content %}{% endblock %}
+</div>
 </body>
 </html>

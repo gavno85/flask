@@ -10,7 +10,9 @@ new name
 {% endfor %}
 <h2>new name</h2>
 <form method="POST">
-    <input name="new_name" type="text" placeholder="input new name">
-    <button type="submit">sumbit</button>
+    <div class="input-group">
+        <input name="new_name" type="text" placeholder="input new name" class="form-control">
+        <button type="submit" class="btn-outline theme-secondary input-group-btn" id="button-addon">sumbit</button>
+    </div>
 </form>
 {% endblock %}

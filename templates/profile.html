@@ -7,7 +7,7 @@ profile
 {% block content %}
 <h3>you have {{ products_company|length }} products</h3>
 
-<a href="{{ url_for('new_name') }}"><button>update name</button></a>
-<a href="{{ url_for('new_password') }}"><button>update password</button></a>
-<a href="{{ url_for('confirmation_delete_account') }}"><button>delete account</button></a>
+<a href="{{ url_for('new_name') }}"><button class="btn-solid theme-inverse">update name</button></a>
+<a href="{{ url_for('new_password') }}"><button class="btn-solid theme-inverse">update password</button></a>
+<a href="{{ url_for('confirmation_delete_account') }}"><button class="btn-subtle theme-danger"">delete account</button></a>
 {% endblock %}

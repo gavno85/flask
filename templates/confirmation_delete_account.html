@@ -8,7 +8,7 @@ delete account confirmation
 
 {% block content %}
 <h1>are you sure that you want to delete account?</h1>
-<a href="{{ url_for('delete_account') }}"><button>sumbit</button></a>
-<a href="{{ url_for('profile') }}"><button>reject</button></a>
+<a href="{{ url_for('delete_account') }}"><button class="btn-subtle theme-danger">sumbit</button></a>
+<a href="{{ url_for('profile') }}"><button class="btn-solid theme-inverse">reject</button></a>
 
 {% endblock %}

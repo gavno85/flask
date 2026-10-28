@@ -1,0 +1,227 @@
+body {
+    background-color: #171618;
+    margin: 20px;
+}
+
+h1 {
+    color: white;
+    font-size: 30px;
+}
+
+h2 {
+    color: white;
+    font-size: 20px;
+}
+
+h3 {
+    color: white;
+    font-size: 20px;
+}
+
+button {
+    width: 100px;
+    color: white;
+    background-color: #393c3f;
+    border: none;
+    border-radius: 10px;
+}
+
+.btn-primary {
+    background-color: #232323;
+}
+
+.btn-danger {
+    background-color: indianred;
+}
+
+button:hover {
+    background-color: #2b2e31;
+}
+
+input {
+    width: 250px;
+    height: 20px;
+    border-radius: 10px;
+    border: 2px solid;
+    border-color: #393c3f;
+    margin: 3px;
+    padding: 2px;
+}
+
+input:hover {
+    border-color: #2b2e31;
+}
+
+input:focus {
+    border-color: #393c3f;
+    outline: none;
+}
+
+/*nav {*/
+/*    display: flex;*/
+/*    background-color: #393c3f;*/
+/*    align-items: center;*/
+/*}*/
+/*nav > a {*/
+/*    color: white;*/
+/*    text-decoration: none;*/
+
+/*}*/
+/*nav:hover {*/
+/*    background-color: #2b2e31;*/
+/*}*/
+
+.navbar {
+    background-color: #393c3f;
+    padding: 10px 15px;
+    display: flex;
+    /*align-items: center;*/
+    justify-content: space-between;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+}
+
+.navbar a:hover {
+    color: #2b2e31;
+}
+
+.nav-buttons {
+    display: flex;
+    
+}
+
+.flash {
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 1px solid;
+    border-radius: 10px;
+    background-color: darkgrey;
+    color: white;
+}
+
+.flash.error {
+    background-color: indianred;
+}
+
+.flash.success {
+    background-color: darkseagreen;
+}
+
+.flash.info {
+    color: white;
+    background-color: #4e4b4b;
+}
+
+table {
+    width: 100px;
+    border-collapse: collapse;
+    color: white;
+}
+
+th:hover {
+    background-color: #4b4848;
+}
+
+td:hover {
+    background-color: #4b4848;
+}
+
+.form-container {
+    width: 350px;
+    margin: 0 auto;
+    margin-top: 10px;
+    border: 1px solid;
+    padding: 10px;
+    border-radius: 10px;
+    border-color: #393c3f;
+}
+
+.form-container button,
+.form-container input {
+    margin-bottom: 10px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+
+.product-form-container {
+    background-color: #171618;
+    border: 2px solid;
+    border-color: black;
+    border-radius: 10px;
+}
+
+.add-product-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 500px;
+}
+
+
+.product-input {
+    display: flex;
+    width: 100%;
+}
+
+.product-input input {
+    color: white;
+    background-color: #171618;
+    flex: 1;
+    padding: 8px 12px;
+    box-sizing: border-box;
+    border-color: black;
+}
+.product-input input:focus {
+    border-color: #232323;
+}
+
+.product-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #008CBA;
+    color: white;
+    border-radius: 4px;
+}
+
+.product-search-form {
+    background-color: #171618;
+    border: 2px solid;
+    border-radius: 10px;
+    border-color: black;
+    gap: 5px;
+    padding: 5px;
+}
+
+.product-search-form input {
+    color: white;
+    background-color: #171618;
+    border: 2px solid;
+    border-radius: 10px;
+    border-color: black;
+}
+
+.product-search-form input:focus {
+    border-color: #232323;
+}
+
+.product-search-form button {
+    background-color: #008CBA;
+    color: white;
+}
+
+.product-search-form button:hover {
+    background-color: #4b4848;
+}
+
+.product-search-form select {
+    width: 225px;
+    height:30px;
+    color: white;
+    background-color: #171618;
+    border: 2px solid;
+    border-radius: 5px;
+    border-color: black;
+}

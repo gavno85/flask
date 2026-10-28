@@ -5,9 +5,12 @@ register
 {% endblock %}
 
 {% block content %}
-<form method="POST">
+<div class="form-container">
+    <h2>register company</h2>
+    <form method="POST">
     <input name="company_name" type="text" placeholder="input name of company">
     <br><input name="password" type="password" placeholder="input password">
-    <button type="submit">register</button>
+    <button type="submit" class="btn-solid theme-inverse">register</button>
 </form>
+</div>
 {% endblock %}
