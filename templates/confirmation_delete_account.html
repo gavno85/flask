@@ -7,8 +7,18 @@ delete account confirmation
 {% endblock %}
 
 {% block content %}
-<h1>are you sure that you want to delete account?</h1>
-<a href="{{ url_for('delete_account') }}"><button class="btn-subtle theme-danger">sumbit</button></a>
-<a href="{{ url_for('profile') }}"><button class="btn-solid theme-inverse">reject</button></a>
+    <div class="d-flex justify-content-center flex-column align-items-center min-vh-100">
+        <h4>are you sure that you want to delete account?</h4>
+        <div class="row justify-content-center w-100">
+            <div class="col-2">
+                <a href="{{ url_for('delete_account') }}"><button class="btn-subtle theme-danger w-100">sumbit</button></a>
+            </div>
+
+            <div class="col-2">
+                <a href="{{ url_for('profile') }}"><button class="btn-solid theme-inverse w-100">reject</button></a>
+            </div>
+        </div>
+    </div>
+
 
 {% endblock %}

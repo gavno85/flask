@@ -18,8 +18,8 @@ def is_valid_account(name, password):
 def load_user(company_id):
     return get_company_by_id(int(company_id))
 
-@app.route('/', methods=['GET', "POST"])
-@app.route('/products', methods=["GET","POST"])
+@app.route('/', methods=['GET', ])
+@app.route('/products', methods=["GET"])
 @login_required
 def products():
     if not current_user:
@@ -34,7 +34,7 @@ def products():
         if not product_exists(name_product, current_user.id):
             add_product(name_product, price_product, category_product, current_user.id)
         else:
-            flash(f'product {name_product} is exists')
+            flash(f'product {name_product} is exists', category='danger')
 
         return redirect(url_for('products'))
 
@@ -67,7 +67,7 @@ def register_company():
             add_company(company_name, password_hash)
 
         else:
-            flash('password shorter than 6, login is not exists or company with this name exists')
+            flash('password shorter than 6, login is not exists or company with this name exists', category='danger')
         return redirect(url_for('products'))
 
     return render_template('register.html')
@@ -79,16 +79,16 @@ def login():
         company_name = request.form.get('company_name')
         company_password = request.form.get('password')
         if not company_exists(company_name):
-            flash(f'company {company_name} is not exists')
+            flash(f'company {company_name} is not exists', category='danger')
             return redirect(url_for('register_company'))
         company = get_company(company_name)
 
         if not check_password_hash(company.password, company_password):
-            flash('incorrect password')
+            flash('incorrect password', category='danger')
             return redirect(url_for('login'))
 
         login_user(company)
-        flash(f'welcome {company_name}')
+        flash(f'welcome {company_name}', category='success')
         return redirect(url_for('products'))
 
     return render_template('login.html')
@@ -97,7 +97,7 @@ def login():
 @login_required
 def logout():
     logout_user()
-    flash('you LogOut')
+    flash('you LogOut', category='info')
 
     return redirect(url_for('products'))
 
@@ -106,7 +106,7 @@ def logout():
 @login_required
 def delete_product(name_product):
     if product_exists(name_product, current_user.id):
-        flash(f'product {name_product} deleted')
+        flash(f'product {name_product} deleted', category='info')
         delete_product_db(name_product, current_user.id)
 
     return redirect(url_for('products'))
@@ -119,7 +119,7 @@ def edit_product(name_product):
         old_category = get_product(name_product, current_user.id).category
         old_price = get_product(name_product, current_user.id).price
     else:
-        flash('error in edit')
+        flash('error in edit', category='danger')
         return redirect(url_for('products'))
 
     if request.method == "POST":
@@ -127,10 +127,10 @@ def edit_product(name_product):
             new_category = request.form.get('new_category')
             new_price = request.form.get('new_price')
             edit_product_db(name_product, new_category, new_price, current_user.id)
-            flash('product was edited')
+            flash('product was edited', category='info')
             return redirect(url_for('products'))
         else:
-            flash('product was not finded')
+            flash('product was not finded', category='danger')
     return render_template('edit.html', old_product_info= [old_category, old_price])
 
 @app.route('/profile', methods= ["GET", "POST"])
@@ -150,7 +150,7 @@ def new_name():
             flash('name was updated')
             return redirect(url_for('profile'))
         else:
-            flash('this name is used')
+            flash('this name is used', category='danger')
             return redirect(url_for('new_name'))
     return render_template('new_name.html')
 
@@ -161,7 +161,7 @@ def new_password():
         old_password = request.form.get('old_password')
 
         if not check_password_hash(current_user.password, old_password):
-            flash('uncorrect old password')
+            flash('uncorrect old password', category='danger')
 
             return redirect(url_for('new_password'))
 
@@ -170,11 +170,11 @@ def new_password():
         new_password_hash = generate_password_hash(new_password_html)
 
         if not new_password_html == again_new_password or len(new_password_html) <= 6:
-            flash('The new password does not match the repeated password or length of password shorter 6', category='error')
+            flash('The new password does not match the repeated password or length of password shorter 6', category='danger')
             return redirect(url_for('new_password'))
 
         update_company_password(current_user.name, new_password_hash)
-        flash('password was updated')
+        flash('password was updated', category='success')
         return redirect(url_for('profile'))
 
     return render_template('new_password.html')
@@ -191,5 +191,17 @@ def delete_account():
     delete_company(current_user.name)
     logout_user()
     return redirect(url_for('login'))
+
+@app.errorhandler(403)
+def not_access(*args):
+    return render_template('errors/not_acces.html')
+
+@app.errorhandler(404)
+def not_find(*args):
+    return render_template('errors/not_find.html')
+
+@app.errorhandler(500)
+def server_error(*args):
+    return render_template('errors/server_error.html')
 
 app.run(debug=True)

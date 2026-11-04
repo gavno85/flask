@@ -13,7 +13,9 @@
 
 <div class="container">
 {% for category, message in get_flashed_messages(with_categories=true) %}
-    <p class="flash {{ category }}">{{ message }}</p>
+    <div class="alert theme-{{ category }} my-3">
+        <p>{{ message }}</p>
+    </div>
 {% endfor %}
 
 {% block content %}{% endblock %}
